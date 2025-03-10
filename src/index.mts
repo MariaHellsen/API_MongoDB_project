@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 dotenv.config();
+const port = process.env.PORT || 3000;
+const dbUrl = process.env.MONGO_URL;
+if (!dbUrl) throw Error("No MONGO_URL in env file");
 
 const app = express();
 app.use(json());
@@ -11,9 +14,12 @@ app.get("/ping", (_, res) => {
   res.status(200).json({ status: "Welcome to my Bookstore" });
 });
 
-app.listen(3000, (error) => {
-  console.log("API is running");
-  if (error) {
-    console.error(error);
+app.listen(port, async () => {
+  try {
+    await mongoose.connect(dbUrl);
+    console.log("MongoDB connection state:", mongoose.connection.readyState);
+    console.log("Api is running");
+  } catch (error) {
+    console.error("Error", error);
   }
 });
