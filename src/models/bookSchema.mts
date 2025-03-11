@@ -5,8 +5,8 @@ const bookSchema = new Schema({
   id: { type: Number, required: true },
   name: { type: String, required: true },
   author: { type: String, required: true },
-  price: Number,
+  price: { type: Number, required: true },
 });
 
-const Book = model("book", bookSchema);
+const Book = model("Book", bookSchema);
 export default Book;
