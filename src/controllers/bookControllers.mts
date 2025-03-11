@@ -20,3 +20,28 @@ export const createBook = async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 };
+
+export const getBooks = async (req: Request, res: Response) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+export const getBooksById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const foundBook = await Book.findOne({ id: +id });
+
+    if (foundBook) {
+      res.status(200).json(foundBook);
+    } else {
+      res.status(400).json({ status: "Invalid id" });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
