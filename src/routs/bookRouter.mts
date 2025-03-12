@@ -4,6 +4,7 @@ import {
   getBooks,
   getBooksById,
   updateBook,
+  deleteBook,
 } from "../controllers/bookControllers.mjs";
 
 export const bookRouter = express.Router();
@@ -13,4 +14,4 @@ bookRouter.post("/", createBook);
 bookRouter.get("/", getBooks);
 bookRouter.get("/:id", getBooksById);
 bookRouter.put("/:id", updateBook);
-// router.delete('/:id', deleteBook)
+bookRouter.delete("/:id", deleteBook);

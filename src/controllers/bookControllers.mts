@@ -84,3 +84,14 @@ export const updateBook = async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 };
+
+export const deleteBook = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    await Book.deleteOne({ id: +id });
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
