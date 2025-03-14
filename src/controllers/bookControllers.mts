@@ -21,11 +21,42 @@ export const createBook = async (req: Request, res: Response) => {
   }
 };
 
+// export const getBooks = async (req: Request, res: Response) => {
+//   try {
+//     const books = await Book.find();
+//     res.status(200).json(books);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// };
+
 export const getBooks = async (req: Request, res: Response) => {
+  const { sort, q } = req.query;
+  const books = await Book.find();
+  let filteredBooks = books;
+
   try {
-    const books = await Book.find();
-    res.status(200).json(books);
+    if (q) {
+      filteredBooks = books.filter((b) => b.name.indexOf(q.toString()) >= 0);
+    }
+
+    if (sort === "price") {
+      filteredBooks.sort((a, b) => {
+        if (a.price < b.price) return -1;
+        if (a.price > b.price) return 1;
+        return 0;
+      });
+    }
+    if (sort === "name") {
+      filteredBooks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+    }
+    return res.status(200).json(filteredBooks);
   } catch (error) {
+    console.error(error);
     res.status(500).send(error);
   }
 };
